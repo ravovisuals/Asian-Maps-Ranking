@@ -1064,3 +1064,21 @@ h3 {
     justify-content: center;
   }
 }
+
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.footer a {
+    color: #888;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.footer a:hover {
+    color: #E1306C; /* Instagram-Farbe */
+}
