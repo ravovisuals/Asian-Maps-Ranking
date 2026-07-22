@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asian Maps Rangliste</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="backdrop" aria-hidden="true">
+      <div class="grid"></div>
+      <div class="scanline"></div>
+    </div>
+
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Asian Maps Rangliste">
+        <span class="brand-mark">AM</span>
+        <span class="brand-text">
+          <span class="brand-title">Asian Maps</span>
+          <span class="brand-credit">by Ravo Visuals</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="#ranking">Rangliste</a>
+        <a href="#formula">Formel</a>
+        <a href="#races">Rennen</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">GTA Online Auswertung</p>
+          <h1>Asian Maps Rangliste</h1>
+          <p class="hero-lead">
+            Handanalysierte GTA-Rennen, echte Platzierungen und ein Leaderboard
+            mit hochwertigem E-Sports-Gefühl.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#ranking">Leaderboard ansehen</a>
+            <a class="ghost-action" href="#formula">Wertung verstehen</a>
+          </div>
+        </div>
+
+        <aside class="hero-panel reveal" aria-label="Analyse Status">
+          <div class="live-badge">
+            <span></span>
+            Manuelle Analyse
+          </div>
+          <div class="leader-preview" id="leaderPreview"></div>
+        </aside>
+      </section>
+
+      <section class="stats-band" aria-label="Projekt Kennzahlen">
+        <div class="stat reveal">
+          <span id="statRaces">0</span>
+          <p>analysierte Rennen</p>
+        </div>
+        <div class="stat reveal">
+          <span id="statVideos">0</span>
+          <p>YouTube-Videos</p>
+        </div>
+        <div class="stat reveal">
+          <span id="statPlacements">0</span>
+          <p>Platzierungen</p>
+        </div>
+        <div class="stat reveal">
+          <span id="statPlayers">0</span>
+          <p>Spieler</p>
+        </div>
+      </section>
+
+      <section class="manual-note section reveal">
+        <div>
+          <p class="eyebrow">Kein Scraping. Keine Community-Tabelle.</p>
+          <h2>Jede Platzierung wurde von Hand aus den Videos gelesen.</h2>
+        </div>
+        <p>
+          Die Website macht sichtbar, was hinter der Rangliste steckt: Video für Video,
+          Rennen für Rennen, Platzierung für Platzierung.
+        </p>
+      </section>
+
+      <section class="section leaderboard-section" id="ranking">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Gesamtwertung</p>
+          <h2>Performance Leaderboard</h2>
+          <p>Qualifiziert sind Fahrer ab 3 Rennen. 1-2 Rennen erscheinen separat, damit einzelne Ausreißer die Spitze nicht verzerren.</p>
+        </div>
+
+        <div class="toolbar reveal">
+          <div class="segmented" role="tablist" aria-label="Leaderboard Filter">
+            <button class="active" type="button" data-filter="qualified">Qualifiziert</button>
+            <button type="button" data-filter="all">Alle</button>
+            <button type="button" data-filter="lowData">Zu wenig Daten</button>
+          </div>
+          <label class="search">
+            <span>Suche</span>
+            <input id="searchInput" type="search" placeholder="Spielername" autocomplete="off" />
+          </label>
+        </div>
+
+        <div class="leaderboard-shell reveal">
+          <div class="table-head">
+            <span>Rang</span>
+            <span>Fahrer</span>
+            <span>Score</span>
+            <span>Rennen</span>
+            <span>Top 3</span>
+            <span>Ø Platz</span>
+          </div>
+          <div id="leaderboard" class="leaderboard"></div>
+        </div>
+      </section>
+
+      <section class="section formula-grid" id="formula">
+        <div class="formula-copy reveal">
+          <p class="eyebrow">Faire Wertung</p>
+          <h2>So entsteht der Score.</h2>
+          <p>
+            Der Score soll leicht verständlich bleiben: Gute Platzierungen sind am
+            wichtigsten. Viele Rennen machen den Wert nur etwas verlässlicher.
+          </p>
+        </div>
+        <div class="formula-card reveal">
+          <h3>Asian Maps Score</h3>
+          <div class="formula-line">
+            <span>1. Rennleistung</span>
+            <strong>Platz 1 gibt 100 Punkte, letzter Platz 0 Punkte</strong>
+          </div>
+          <div class="formula-line">
+            <span>2. Teilnehmerfeld</span>
+            <strong>die Punkte werden an die Anzahl der Fahrer angepasst</strong>
+          </div>
+          <div class="formula-line">
+            <span>3. Konstanz</span>
+            <strong>aus allen Rennen wird der Durchschnitt gebildet</strong>
+          </div>
+          <div class="formula-line">
+            <span>4. Kleine Boni</span>
+            <strong>Top 3, Siege und viele Rennen geben leichte Extras</strong>
+          </div>
+          <p>
+            Formel: Rennleistung x Stabilität + Top-3-Bonus + Sieg-Bonus +
+            Erfahrungsbonus. Fahrer mit 1-2 Rennen bleiben sichtbar, stehen aber
+            separat bei „Zu wenig Daten“.
+          </p>
+          <div class="formula-detail" aria-label="Genaue Score Formel">
+            <span>Rennleistung pro Rennen = (Teilnehmer - Platz) / (Teilnehmer - 1) x 100</span>
+            <span>Top-3-Bonus: bis +5 Punkte · Sieg-Bonus: bis +3 Punkte</span>
+            <span>Erfahrungsbonus: bis +6 Punkte · Stabilität steigt mit mehr Rennen leicht an</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="races">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Datenbasis</p>
+          <h2>Rennen & Quellen</h2>
+          <p>Alle erfassten Rennen bleiben nachvollziehbar mit YouTube-Quelle und Ergebnisliste.</p>
+        </div>
+        <div class="race-grid reveal" id="raceGrid"></div>
+      </section>
+    </main>
+
+    <dialog id="playerDialog" class="player-dialog">
+      <button class="dialog-close" type="button" aria-label="Schließen">×</button>
+      <div id="dialogContent"></div>
+    </dialog>
+
+    <dialog id="adminDialog" class="admin-dialog">
+      <button class="dialog-close" type="button" aria-label="Schließen" data-admin-close>×</button>
+      <div class="dialog-body admin-body">
+        <div id="adminLogin" class="admin-login">
+          <p class="eyebrow">Admin-Bereich</p>
+          <h2>Zugang</h2>
+          <p>Bitte Passwort eingeben, um Rennen und Spieler zu verwalten.</p>
+          <form id="adminLoginForm" class="admin-form">
+            <label>
+              <span>Passwort</span>
+              <input type="password" id="adminPasswordInput" autocomplete="off" required />
+            </label>
+            <p class="admin-error" id="adminError" hidden>Falsches Passwort.</p>
+            <button class="primary-action" type="submit">Einloggen</button>
+          </form>
+        </div>
+
+        <div id="adminPanel" class="admin-panel" hidden>
+          <p class="eyebrow">Admin-Bereich</p>
+          <h2>Rennen &amp; Spieler verwalten</h2>
+
+          <div class="admin-tabs" role="tablist">
+            <button type="button" class="admin-tab active" data-tab="race">Neues Rennen</button>
+            <button type="button" class="admin-tab" data-tab="player">Spielerbild</button>
+            <button type="button" class="admin-tab" data-tab="export">Export</button>
+          </div>
+
+          <section class="admin-tab-panel" data-panel="race">
+            <form id="raceForm" class="admin-form">
+              <label>
+                <span>YouTube-Link</span>
+                <input type="url" id="raceVideoInput" placeholder="https://www.youtube.com/watch?v=..." required />
+              </label>
+              <div id="resultRows" class="result-rows"></div>
+              <button type="button" class="ghost-action" id="addRowBtn">+ Fahrer hinzufügen</button>
+              <button class="primary-action" type="submit">Rennen speichern</button>
+            </form>
+
+            <div class="admin-list">
+              <h3>Manuell hinzugefügte Rennen</h3>
+              <div id="customRaceList"></div>
+            </div>
+          </section>
+
+          <section class="admin-tab-panel" data-panel="player" hidden>
+            <form id="playerImageForm" class="admin-form">
+              <label>
+                <span>Spielername</span>
+                <input type="text" id="playerNameInput" list="playerNameList" required />
+                <datalist id="playerNameList"></datalist>
+              </label>
+              <label>
+                <span>Bild-URL (optional)</span>
+                <input type="url" id="playerImageUrlInput" placeholder="https://..." />
+              </label>
+              <label>
+                <span>Oder Bild hochladen</span>
+                <input type="file" id="playerImageFileInput" accept="image/*" />
+              </label>
+              <button class="primary-action" type="submit">Bild speichern</button>
+            </form>
+          </section>
+
+          <section class="admin-tab-panel" data-panel="export" hidden>
+            <p>Diese Daten liegen nur in diesem Browser (localStorage). Für eine dauerhafte Änderung der Webseite diesen Code in <code>app.js</code> einfügen (ersetzt <code>baseRaces</code> und <code>basePlayerImages</code>).</p>
+            <button type="button" class="ghost-action" id="generateExportBtn">Code generieren</button>
+            <textarea id="exportOutput" class="export-output" readonly rows="14"></textarea>
+            <button type="button" class="ghost-action" id="copyExportBtn">Kopieren</button>
+            <p class="admin-hint">Sobald der Code in <code>app.js</code> übernommen wurde, hier zurücksetzen – sonst wächst der Export bei jeder weiteren Generierung immer weiter an.</p>
+            <button type="button" class="ghost-action admin-danger" id="resetCustomBtn">Eigene Daten zurücksetzen</button>
+          </section>
+        </div>
+      </div>
+    </dialog>
+
+    <button class="admin-toggle" id="adminToggle" type="button" aria-label="Admin öffnen">⚙</button>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
