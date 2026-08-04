@@ -1082,3 +1082,71 @@ h3 {
 .footer a:hover {
     color: #E1306C; /* Instagram-Farbe */
 }
+
+/* --- Prediction Market (additiv, ändert nichts Bestehendes) --- */
+
+.upcoming-races {
+  display: grid;
+  gap: 20px;
+}
+
+.upcoming-race-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.upcoming-entrants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.entrant-bet-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.entrant-bet-btn:hover {
+  border-color: var(--cyan);
+  transform: translateY(-1px);
+}
+
+.entrant-name {
+  font-weight: 600;
+}
+
+.entrant-odds {
+  color: var(--cyan);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+
+/* --- Konto-Button in der Topbar --- */
+#accountToggle {
+  margin-left: auto;
+}
+
+.admin-empty {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+

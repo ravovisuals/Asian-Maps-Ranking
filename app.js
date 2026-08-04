@@ -1,94 +1,61 @@
-const baseRaces = [
-  { video: "https://www.youtube.com/watch?v=FAzZBkJJNs4&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=10", results: [["Rohat", 1], ["Giggand", 2], ["Fabo", 3], ["Rick", 4], ["Danergy", 5], ["Jussef", 6], ["Ayman", 7]] },
-  { video: "https://www.youtube.com/watch?v=FAzZBkJJNs4&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=10", results: [["Rohat", 1], ["Noiizy", 2], ["Giggand", 3], ["Rick", 4], ["Jussef", 5], ["Fabo", 6], ["Danergy", 7], ["Ayman", 8]] },
-  { video: "https://www.youtube.com/watch?v=lFllV1KA6uY&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=9", results: [["Rohat", 1], ["Noiizy", 2], ["Giggand", 3], ["Fabo", 4], ["Huyybui", 5], ["Ayman", 6], ["Ediz", 7]] },
-  { video: "https://www.youtube.com/watch?v=XoFTF9o-T5o&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=8", results: [["Rick", 1], ["Giggand", 2], ["GTasty", 3], ["Noiizy", 4], ["Rohat", 5]] },
-  { video: "https://www.youtube.com/watch?v=XoFTF9o-T5o&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=8", results: [["Giggand", 1], ["GTasty", 2], ["Rohat", 3], ["Rick", 4]] },
-  { video: "https://www.youtube.com/watch?v=6YI4tWKrP7g&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=7", results: [["Rick", 1], ["Rohat", 2], ["Giggand", 3], ["Elquaria", 4], ["JayJo", 5], ["Mehdi", 6], ["GTasty", 7]] },
-  { video: "https://www.youtube.com/watch?v=SqfZaDjLBOg&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=5", results: [["Giggand", 1], ["Rohat", 2], ["Danergy", 3]] },
-  { video: "https://www.youtube.com/watch?v=0FoIvA8OsWw&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=4", results: [["Rohat", 1], ["Giggand", 2], ["Danergy", 3]] },
-  { video: "https://www.youtube.com/watch?v=jA91ANOQyVo&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=3", results: [["Giggand", 1], ["Rohat", 2], ["Rick", 3], ["Danergy", 4]] },
-  { video: "https://www.youtube.com/watch?v=jA91ANOQyVo&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i&index=3", results: [["Giggand", 1], ["Rick", 2], ["Rohat", 3], ["Danergy", 4]] },
-  { video: "https://www.youtube.com/watch?v=bejb2BsdSug", results: [["Rohat", 1], ["Noiizy", 2], ["Fabo", 3], ["Rick", 4], ["Giggand", 5]] },
-  { video: "https://www.youtube.com/watch?v=bejb2BsdSug", results: [["Noiizy", 1], ["Rohat", 2], ["Fabo", 3], ["Rick", 4], ["Giggand", 5]] },
-  { video: "https://www.youtube.com/watch?v=bejb2BsdSug", results: [["Giggand", 1], ["Rohat", 2], ["Rick", 3], ["Noiizy", 4], ["Fabo", 5]] },
-  { video: "https://www.youtube.com/watch?v=jZ3NnARYOZo", results: [["Giggand", 1], ["Rohat", 2], ["Noiizy", 3], ["Jussef", 4], ["Fabo", 5], ["Ayman", 6]] },
-  { video: "https://www.youtube.com/watch?v=jZ3NnARYOZo", results: [["Giggand", 1], ["Rick", 2], ["Rohat", 3], ["Noiizy", 4], ["Fabo", 5], ["Ayman", 6], ["Jussef", 7]] },
-  { video: "https://www.youtube.com/watch?v=fB5_WmlZx3c", results: [["Rick", 1], ["Rohat", 2], ["Jussef", 3], ["Timgioh", 4]] },
-  { video: "https://www.youtube.com/watch?v=fB5_WmlZx3c", results: [["Giggand", 1], ["Rohat", 2], ["Noiizy", 3], ["Jussef", 4], ["Rick", 5], ["Timgioh", 6]] },
-  { video: "https://www.youtube.com/watch?v=fB5_WmlZx3c", results: [["Rohat", 1], ["Rick", 2], ["Noiizy", 3], ["Giggand", 4], ["Timgioh", 5], ["Jussef", 6]] },
-  { video: "https://www.youtube.com/watch?v=XoFTF9o-T5o", results: [["Rick", 1], ["Giggand", 2], ["GTasty", 3], ["Noiizy", 4], ["Rohat", 5]] },
-  { video: "https://www.youtube.com/watch?v=jA91ANOQyVo", results: [["Giggand", 1], ["Noiizy", 2], ["Rohat", 3], ["Ayman", 4], ["Danergy", 6]] },
-  { video: "https://www.youtube.com/watch?v=_ZOkUVj_MTc", results: [["Rohat", 1], ["Fabo", 2], ["Giggand", 3], ["Rick", 4], ["Ayman", 5]] },
-  { video: "https://www.youtube.com/watch?v=_ZOkUVj_MTc", results: [["Rohat", 1], ["Rick", 2], ["Giggand", 3], ["Fabo", 4], ["Ayman", 5]] },
-  { video: "https://www.youtube.com/watch?v=_ZOkUVj_MTc", results: [["Rohat", 1], ["Giggand", 2], ["Ayman", 3], ["Fabo", 4]] },
-  { video: "https://www.youtube.com/watch?v=T5hPmJ3rIL4&list=PLTQhY0S6fhpRDhaqbxOBL1fd9Mrpud6-i", results: [["Giggand", 1], ["Rick", 2], ["Rohat", 3], ["Jussef", 4], ["Noiizy", 5]] },
-  { video: "https://www.twitch.tv/videos/2825515693?t=8145s", results: [["Rohat", 1], ["Noiizy", 2], ["Giggand", 3], ["Jussef", 4], ["Ediz", 5], ["Ayman", 6]] },
-  { video: "https://www.twitch.tv/videos/2825515693?t=11935s", results: [["Giggand", 1], ["Rohat", 2], ["Noiizy", 3], ["Rick", 4], ["Jussef", 5], ["Ediz", 6], ["Ayman", 7]] },
-  { video: "https://www.twitch.tv/videos/2825515693?t=18365s", results: [["Giggand", 1], ["Rohat", 2], ["Noiizy", 3]] }
-];
+// Diese beiden Arrays kommen jetzt NICHT mehr fest aus Code, sondern werden
+// beim Laden der Seite live aus Supabase geholt (siehe loadBaseData() unten).
+let baseRaces = [];
+let basePlayerImages = {};
+
+async function loadBaseData() {
+  const { data: racesData, error: racesError } = await supabaseClient
+    .from("races")
+    .select("id, video_url, created_at, race_results(place, players(name))")
+    .eq("status", "finished")
+    .order("created_at", { ascending: true });
+
+  if (racesError) throw racesError;
+
+  baseRaces = racesData.map((race) => ({
+    id: race.id,
+    video: race.video_url,
+    results: race.race_results.map((r) => [r.players.name, r.place])
+  }));
+
+  const { data: playersData, error: playersError } = await supabaseClient
+    .from("players")
+    .select("name, image_url");
+
+  if (playersError) throw playersError;
+
+  basePlayerImages = Object.fromEntries(
+    playersData.filter((p) => p.image_url).map((p) => [p.name, p.image_url])
+  );
+}
 
 const MIN_RACES = 3;
 const aliases = new Map([
   ["Noizzy", "Noiizy"]
 ]);
 
-const basePlayerImages = {
-  Rohat: "./assets/players/rohat.png",
-  Ayman: "./assets/players/Ayman.png",
-  Danergy: "./assets/players/Danergy.png",
-  Ediz: "./assets/players/Ediz.png",
-  Elquaria: "./assets/players/Elquaria.png",
-  Fabo: "./assets/players/Fabo.png",
-  Giggand: "./assets/players/Giggand.png",
-  GTasty: "./assets/players/GTasty.png",
-  Huyybui: "./assets/players/Huyybui.png",
-  JayJo: "./assets/players/JayJo.png",
-  Jussef: "./assets/players/Jussef.png",
-  Mehdi: "./assets/players/Mehdi.png",
-  Noiizy: "./assets/players/Noiizy.png",
-  Rick: "./assets/players/Rick.png",
-  Timgioh: "./assets/players/Timgioh.png",
-  
-};
+// --- Admin -----------------------------------------------------------
+// Admin-Login läuft jetzt über echten Supabase Auth Login (kein
+// Client-seitiges Passwort mehr). Die E-Mail hier muss zu dem Admin-User
+// passen, den du in Supabase unter Authentication -> Users angelegt hast.
+const ADMIN_EMAIL = "visualsravo@gmail.com";
 
-// --- Admin / Persistenz -------------------------------------------------
-// Es gibt kein Backend: alles, was im Admin-Bereich gespeichert wird, landet
-// im localStorage DIESES Browsers. Über den Export-Tab lässt sich der
-// aktuelle Datensatz als Code exportieren, um ihn dauerhaft in app.js zu
-// übernehmen (z. B. beim nächsten Upload der Seite).
-const STORAGE_RACES_KEY = "am_admin_races_v1";
-const STORAGE_IMAGES_KEY = "am_admin_images_v1";
-const ADMIN_SESSION_KEY = "am_admin_unlocked_v1";
-const ADMIN_PASSWORD = "asianmaps26"; // einfacher Client-seitiger Schutz, kein echter Login
+// Schalter: Wett-Feature vorübergehend deaktiviert (nur Frontend, Supabase
+// Tabellen/Funktionen bleiben unverändert -- einfach auf true setzen, um es
+// wieder einzuschalten).
+const PREDICTIONS_ENABLED = false;
 
-function loadStoredJSON(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch (error) {
-    console.warn("Konnte gespeicherte Daten nicht laden:", key, error);
-    return fallback;
-  }
-}
-
-function saveStoredJSON(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.warn("Konnte Daten nicht speichern:", key, error);
-  }
-}
-
-let customRaces = loadStoredJSON(STORAGE_RACES_KEY, []);
-let customPlayerImages = loadStoredJSON(STORAGE_IMAGES_KEY, {});
+// Schalter: Community-Login/Registrierung vorübergehend deaktiviert (nur
+// Frontend, Supabase Auth/Tabellen bleiben unverändert -- auf true setzen,
+// um es wieder einzuschalten).
+const ACCOUNTS_ENABLED = false;
 
 function getAllRaces() {
-  return [...baseRaces, ...customRaces];
+  return baseRaces;
 }
 
 function getAllPlayerImages() {
-  return { ...basePlayerImages, ...customPlayerImages };
+  return basePlayerImages;
 }
 
 // --- Kernlogik: arbeitet auf getAllRaces()/getAllPlayerImages(), damit
@@ -124,10 +91,33 @@ const els = {
   playerNameList: document.querySelector("#playerNameList"),
   playerImageUrlInput: document.querySelector("#playerImageUrlInput"),
   playerImageFileInput: document.querySelector("#playerImageFileInput"),
-  generateExportBtn: document.querySelector("#generateExportBtn"),
-  exportOutput: document.querySelector("#exportOutput"),
-  copyExportBtn: document.querySelector("#copyExportBtn"),
-  resetCustomBtn: document.querySelector("#resetCustomBtn")
+  adminLogoutBtn: document.querySelector("#adminLogoutBtn"),
+  accountToggle: document.querySelector("#accountToggle"),
+  accountDialog: document.querySelector("#accountDialog"),
+  accountAuth: document.querySelector("#accountAuth"),
+  accountMaintenance: document.querySelector("#accountMaintenance"),
+  accountProfile: document.querySelector("#accountProfile"),
+  accountPanels: document.querySelectorAll("[data-account-panel]"),
+  showRegisterBtn: document.querySelector("#showRegisterBtn"),
+  showLoginBtn: document.querySelector("#showLoginBtn"),
+  accountLoginForm: document.querySelector("#accountLoginForm"),
+  loginUsernameInput: document.querySelector("#loginUsernameInput"),
+  loginPasswordInput: document.querySelector("#loginPasswordInput"),
+  loginError: document.querySelector("#loginError"),
+  accountRegisterForm: document.querySelector("#accountRegisterForm"),
+  registerUsernameInput: document.querySelector("#registerUsernameInput"),
+  registerPasswordInput: document.querySelector("#registerPasswordInput"),
+  registerError: document.querySelector("#registerError"),
+  accountUsername: document.querySelector("#accountUsername"),
+  accountCoins: document.querySelector("#accountCoins"),
+  resetCoinsBtn: document.querySelector("#resetCoinsBtn"),
+  accountLogoutBtn: document.querySelector("#accountLogoutBtn"),
+  communityLeaderboard: document.querySelector("#communityLeaderboard"),
+  resolveRaceSelect: document.querySelector("#resolveRaceSelect"),
+  entrantRows: document.querySelector("#entrantRows"),
+  addEntrantRowBtn: document.querySelector("#addEntrantRowBtn"),
+  announceForm: document.querySelector("#announceForm"),
+  upcomingRaces: document.querySelector("#upcomingRaces")
 };
 
 let activeFilter = "qualified";
@@ -139,7 +129,12 @@ function normalizeName(name) {
 }
 
 function uniqueVideoId(url) {
-  return new URL(url).searchParams.get("v") || url;
+  if (!url) return null;
+  try {
+    return new URL(url).searchParams.get("v") || url;
+  } catch (error) {
+    return url;
+  }
 }
 
 function getRaceResults(race) {
@@ -428,9 +423,29 @@ function createResultRow(name = "", place = "") {
   return row;
 }
 
+function createEntrantRow(name = "") {
+  const row = document.createElement("div");
+  row.className = "result-row";
+  row.innerHTML = `
+    <input type="text" class="entrant-name-input" placeholder="Fahrername" value="${name}" list="playerNameList" />
+    <button type="button" class="result-remove" aria-label="Fahrer entfernen">×</button>
+  `;
+  row.querySelector(".result-remove").addEventListener("click", () => row.remove());
+  return row;
+}
+
+function resetAnnounceForm() {
+  if (!els.entrantRows) return;
+  els.entrantRows.innerHTML = "";
+  for (let i = 0; i < 4; i += 1) {
+    els.entrantRows.appendChild(createEntrantRow());
+  }
+}
+
 function resetRaceForm() {
   if (!els.resultRows) return;
   els.raceVideoInput.value = "";
+  if (els.resolveRaceSelect) els.resolveRaceSelect.value = "";
   els.resultRows.innerHTML = "";
   for (let i = 0; i < 4; i += 1) {
     els.resultRows.appendChild(createResultRow());
@@ -439,17 +454,17 @@ function resetRaceForm() {
 
 function renderAdminRaceList() {
   if (!els.customRaceList) return;
-  if (customRaces.length === 0) {
-    els.customRaceList.innerHTML = `<p class="admin-empty">Noch keine manuell hinzugefügten Rennen.</p>`;
+  if (baseRaces.length === 0) {
+    els.customRaceList.innerHTML = `<p class="admin-empty">Noch keine Rennen vorhanden.</p>`;
     return;
   }
-  els.customRaceList.innerHTML = customRaces.map((race, index) => `
+  els.customRaceList.innerHTML = [...baseRaces].reverse().map((race) => `
     <div class="admin-race-row">
       <div>
         <strong>${race.results.map(([name, place]) => `#${place} ${name}`).join(", ")}</strong>
         <a href="${race.video}" target="_blank" rel="noreferrer">Quelle</a>
       </div>
-      <button type="button" class="result-remove" data-remove-race="${index}" aria-label="Rennen löschen">×</button>
+      <button type="button" class="result-remove" data-remove-race="${race.id}" aria-label="Rennen löschen">×</button>
     </div>
   `).join("");
 }
@@ -463,15 +478,35 @@ function unlockAdmin() {
   els.adminLogin.hidden = true;
   els.adminPanel.hidden = false;
   resetRaceForm();
+  resetAnnounceForm();
   renderAdminRaceList();
   renderAdminPlayerList();
+  populateResolveRaceSelect();
+
+  if (!PREDICTIONS_ENABLED) {
+    const announceTabBtn = document.querySelector('[data-tab="announce"]');
+    const announcePanel = document.querySelector('[data-panel="announce"]');
+    const resolveLabel = document.querySelector("#resolveRaceLabel");
+    if (announceTabBtn) announceTabBtn.hidden = true;
+    if (announcePanel) announcePanel.hidden = true;
+    if (resolveLabel) resolveLabel.hidden = true;
+  }
 }
+
+// Der Admin-Bereich verlaesst sich NICHT auf eine bestehende Supabase-Session
+// (die haette jeder eingeloggte Community-Nutzer auch). Er wird ausschliesslich
+// ueber diese In-Memory-Variable freigeschaltet, gesetzt erst nach erfolgreichem
+// Admin-Login-Formular in DIESEM Seitenaufruf.
+let isAdminUnlocked = false;
 
 if (els.adminToggle) {
   els.adminToggle.addEventListener("click", () => {
     els.adminDialog.showModal();
-    if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "1") {
+    if (isAdminUnlocked) {
       unlockAdmin();
+    } else {
+      els.adminLogin.hidden = false;
+      els.adminPanel.hidden = true;
     }
   });
 }
@@ -487,16 +522,20 @@ if (els.adminDialog) {
 }
 
 if (els.adminLoginForm) {
-  els.adminLoginForm.addEventListener("submit", (event) => {
+  els.adminLoginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    if (els.adminPasswordInput.value === ADMIN_PASSWORD) {
-      sessionStorage.setItem(ADMIN_SESSION_KEY, "1");
-      els.adminError.hidden = true;
-      els.adminPasswordInput.value = "";
-      unlockAdmin();
-    } else {
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: ADMIN_EMAIL,
+      password: els.adminPasswordInput.value
+    });
+    if (error) {
       els.adminError.hidden = false;
+      return;
     }
+    els.adminError.hidden = true;
+    els.adminPasswordInput.value = "";
+    isAdminUnlocked = true;
+    unlockAdmin();
   });
 }
 
@@ -518,7 +557,7 @@ if (els.addRowBtn) {
 }
 
 if (els.raceForm) {
-  els.raceForm.addEventListener("submit", (event) => {
+  els.raceForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const video = els.raceVideoInput.value.trim();
     if (!video) return;
@@ -538,26 +577,217 @@ if (els.raceForm) {
       return;
     }
 
-    customRaces = [...customRaces, { video, results }];
-    saveStoredJSON(STORAGE_RACES_KEY, customRaces);
-    resetRaceForm();
-    renderAll();
+    const resolvingRaceId = els.resolveRaceSelect ? els.resolveRaceSelect.value : "";
+
+    const submitBtn = els.raceForm.querySelector("button[type=submit]");
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      // 1. Sicherstellen, dass alle Fahrer als players existieren
+      const uniqueNames = [...new Set(results.map(([name]) => name))];
+      const { error: playerUpsertError } = await supabaseClient
+        .from("players")
+        .upsert(uniqueNames.map((name) => ({ name })), { onConflict: "name", ignoreDuplicates: true });
+      if (playerUpsertError) throw playerUpsertError;
+
+      // 2. Rennen anlegen ODER bestehendes angekündigtes Rennen mit Video versehen
+      let raceId;
+      if (resolvingRaceId) {
+        raceId = resolvingRaceId;
+        const { error: updateError } = await supabaseClient
+          .from("races")
+          .update({ video_url: video })
+          .eq("id", raceId);
+        if (updateError) throw updateError;
+      } else {
+        const { data: newRace, error: raceError } = await supabaseClient
+          .from("races")
+          .insert({ video_url: video })
+          .select("id")
+          .single();
+        if (raceError) throw raceError;
+        raceId = newRace.id;
+      }
+
+      // 3. Player-IDs zu den Namen holen
+      const { data: playerRows, error: playerFetchError } = await supabaseClient
+        .from("players")
+        .select("id, name")
+        .in("name", uniqueNames);
+      if (playerFetchError) throw playerFetchError;
+      const idByName = Object.fromEntries(playerRows.map((p) => [p.name, p.id]));
+
+      // 4. Ergebnisse anlegen
+      const resultRowsPayload = results.map(([name, place]) => ({
+        race_id: raceId,
+        player_id: idByName[name],
+        place
+      }));
+      const { error: resultsError } = await supabaseClient.from("race_results").insert(resultRowsPayload);
+      if (resultsError) throw resultsError;
+
+      // 5. Falls es ein angekündigtes Rennen war: Wetten abrechnen
+      let resolveSummary = null;
+      if (resolvingRaceId) {
+        const winner = results.find(([, place]) => place === 1);
+        if (winner) {
+          const { error: resolveError } = await supabaseClient.rpc("resolve_race_bets", {
+            p_race_id: raceId,
+            p_winner_player_id: idByName[winner[0]]
+          });
+          if (resolveError) throw resolveError;
+
+          const { data: settledBets } = await supabaseClient
+            .from("bets")
+            .select("status, amount, payout")
+            .eq("race_id", raceId);
+
+          if (settledBets && settledBets.length > 0) {
+            const totalPool = settledBets.reduce((sum, b) => sum + b.amount, 0);
+            const totalPayout = settledBets.reduce((sum, b) => sum + b.payout, 0);
+            resolveSummary = `\n\nWetten abgerechnet: ${settledBets.length} Wette(n), Pool ${totalPool} Coins, ausgezahlt ${totalPayout} Coins an Gewinner.`;
+          } else {
+            resolveSummary = `\n\nKeine Wetten auf dieses Rennen vorhanden.`;
+          }
+        }
+      }
+
+      await loadBaseData();
+      await populateResolveRaceSelect();
+      await loadUpcomingRaces();
+      resetRaceForm();
+      renderAll();
+
+      if (resolveSummary) {
+        alert(`Rennen gespeichert.${resolveSummary}`);
+      }
+    } catch (error) {
+      console.error("Rennen konnte nicht gespeichert werden:", error);
+      alert("Fehler beim Speichern. Details in der Browser-Konsole (F12).");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  });
+}
+
+let upcomingRaceEntrantNames = {};
+
+async function populateResolveRaceSelect() {
+  if (!els.resolveRaceSelect) return;
+
+  const { data, error } = await supabaseClient
+    .from("races")
+    .select("id, created_at, race_entrants(players(name))")
+    .eq("status", "upcoming")
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Angekündigte Rennen konnten nicht geladen werden:", error);
+    return;
+  }
+
+  upcomingRaceEntrantNames = {};
+  const options = data.map((race) => {
+    const names = race.race_entrants.map((e) => e.players.name);
+    upcomingRaceEntrantNames[race.id] = names;
+    return `<option value="${race.id}">${names.join(", ")}</option>`;
+  }).join("");
+
+  els.resolveRaceSelect.innerHTML =
+    `<option value="">— Neues Rennen (nicht vorher angekündigt) —</option>${options}`;
+}
+
+if (els.resolveRaceSelect) {
+  els.resolveRaceSelect.addEventListener("change", () => {
+    const raceId = els.resolveRaceSelect.value;
+    els.resultRows.innerHTML = "";
+    const names = upcomingRaceEntrantNames[raceId];
+    if (names && names.length > 0) {
+      names.forEach((name) => els.resultRows.appendChild(createResultRow(name)));
+    } else {
+      for (let i = 0; i < 4; i += 1) els.resultRows.appendChild(createResultRow());
+    }
+  });
+}
+
+if (els.addEntrantRowBtn) {
+  els.addEntrantRowBtn.addEventListener("click", () => {
+    els.entrantRows.appendChild(createEntrantRow());
+  });
+}
+
+if (els.announceForm) {
+  els.announceForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const names = [...els.entrantRows.querySelectorAll(".entrant-name-input")]
+      .map((input) => input.value.trim())
+      .filter(Boolean);
+    const uniqueNames = [...new Set(names)];
+
+    if (uniqueNames.length < 2) {
+      alert("Bitte mindestens 2 Fahrer eintragen.");
+      return;
+    }
+
+    const submitBtn = els.announceForm.querySelector("button[type=submit]");
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const { error: upsertError } = await supabaseClient
+        .from("players")
+        .upsert(uniqueNames.map((name) => ({ name })), { onConflict: "name", ignoreDuplicates: true });
+      if (upsertError) throw upsertError;
+
+      const { data: newRace, error: raceError } = await supabaseClient
+        .from("races")
+        .insert({ video_url: null, status: "upcoming" })
+        .select("id")
+        .single();
+      if (raceError) throw raceError;
+
+      const { data: playerRows, error: fetchError } = await supabaseClient
+        .from("players")
+        .select("id, name")
+        .in("name", uniqueNames);
+      if (fetchError) throw fetchError;
+
+      const entrantPayload = playerRows.map((p) => ({ race_id: newRace.id, player_id: p.id }));
+      const { error: entrantsError } = await supabaseClient.from("race_entrants").insert(entrantPayload);
+      if (entrantsError) throw entrantsError;
+
+      resetAnnounceForm();
+      await populateResolveRaceSelect();
+      await loadUpcomingRaces();
+      alert("Rennen wurde angekündigt.");
+    } catch (error) {
+      console.error("Ankündigung fehlgeschlagen:", error);
+      alert("Fehler beim Ankündigen. Details in der Browser-Konsole (F12).");
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
   });
 }
 
 if (els.customRaceList) {
-  els.customRaceList.addEventListener("click", (event) => {
+  els.customRaceList.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-remove-race]");
     if (!button) return;
-    const index = Number(button.dataset.removeRace);
-    customRaces = customRaces.filter((_, i) => i !== index);
-    saveStoredJSON(STORAGE_RACES_KEY, customRaces);
+    const raceId = button.dataset.removeRace;
+    if (!confirm("Dieses Rennen wirklich löschen?")) return;
+
+    const { error } = await supabaseClient.from("races").delete().eq("id", raceId);
+    if (error) {
+      console.error("Löschen fehlgeschlagen:", error);
+      alert("Fehler beim Löschen. Details in der Browser-Konsole (F12).");
+      return;
+    }
+    await loadBaseData();
     renderAll();
   });
 }
 
 if (els.playerImageForm) {
-  els.playerImageForm.addEventListener("submit", (event) => {
+  els.playerImageForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     const name = els.playerNameInput.value.trim();
     if (!name) return;
@@ -565,10 +795,17 @@ if (els.playerImageForm) {
     const url = els.playerImageUrlInput.value.trim();
     const file = els.playerImageFileInput.files[0];
 
-    function saveImage(src) {
-      customPlayerImages = { ...customPlayerImages, [name]: src };
-      saveStoredJSON(STORAGE_IMAGES_KEY, customPlayerImages);
+    async function saveImage(src) {
+      const { error } = await supabaseClient
+        .from("players")
+        .upsert({ name, image_url: src }, { onConflict: "name" });
+      if (error) {
+        console.error("Bild konnte nicht gespeichert werden:", error);
+        alert("Fehler beim Speichern. Details in der Browser-Konsole (F12).");
+        return;
+      }
       els.playerImageForm.reset();
+      await loadBaseData();
       renderAll();
     }
 
@@ -584,58 +821,404 @@ if (els.playerImageForm) {
   });
 }
 
-if (els.generateExportBtn) {
-  els.generateExportBtn.addEventListener("click", () => {
-    const raceLines = getAllRaces().map((race) => {
-      const resultsText = race.results.map(([name, place]) => `["${name}", ${place}]`).join(", ");
-      return `  { video: "${race.video}", results: [${resultsText}] }`;
-    }).join(",\n");
-
-    const imageLines = Object.entries(getAllPlayerImages()).map(([name, src]) => {
-      return `  ${JSON.stringify(name)}: ${JSON.stringify(src)}`;
-    }).join(",\n");
-
-    els.exportOutput.value =
-`const baseRaces = [
-${raceLines}
-];
-
-const basePlayerImages = {
-${imageLines}
-};`;
+if (els.adminLogoutBtn) {
+  els.adminLogoutBtn.addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    isAdminUnlocked = false;
+    els.adminDialog.close();
+    els.adminLogin.hidden = false;
+    els.adminPanel.hidden = true;
   });
 }
 
-if (els.copyExportBtn) {
-  els.copyExportBtn.addEventListener("click", async () => {
-    if (!els.exportOutput.value) return;
-    try {
-      await navigator.clipboard.writeText(els.exportOutput.value);
-      els.copyExportBtn.textContent = "Kopiert!";
-      setTimeout(() => { els.copyExportBtn.textContent = "Kopieren"; }, 1500);
-    } catch (error) {
-      els.exportOutput.select();
+// --- Community-Konto (Login/Registrierung/Coins) ------------------------
+
+function showAccountPanel(name) {
+  els.accountPanels.forEach((panel) => {
+    panel.hidden = panel.dataset.accountPanel !== name;
+  });
+}
+
+if (els.showRegisterBtn) {
+  els.showRegisterBtn.addEventListener("click", () => showAccountPanel("register"));
+}
+if (els.showLoginBtn) {
+  els.showLoginBtn.addEventListener("click", () => showAccountPanel("login"));
+}
+
+async function refreshAccountUI() {
+  const { data } = await supabaseClient.auth.getSession();
+  const session = data.session;
+
+  if (!session) {
+    els.accountAuth.hidden = false;
+    els.accountProfile.hidden = true;
+    return;
+  }
+
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("username, coins")
+    .eq("id", session.user.id)
+    .single();
+
+  if (error || !profile) {
+    els.accountAuth.hidden = false;
+    els.accountProfile.hidden = true;
+    return;
+  }
+
+  els.accountAuth.hidden = true;
+  els.accountProfile.hidden = false;
+  els.accountUsername.textContent = profile.username;
+  els.accountCoins.textContent = profile.coins.toLocaleString("de-DE");
+  els.resetCoinsBtn.hidden = profile.coins >= 100;
+}
+
+if (els.accountToggle) {
+  els.accountToggle.addEventListener("click", async () => {
+    els.accountDialog.showModal();
+
+    if (!ACCOUNTS_ENABLED) {
+      els.accountMaintenance.hidden = false;
+      els.accountAuth.hidden = true;
+      els.accountProfile.hidden = true;
+      return;
+    }
+
+    els.accountMaintenance.hidden = true;
+    showAccountPanel("login");
+    await refreshAccountUI();
+  });
+}
+
+document.querySelectorAll("[data-account-close]").forEach((btn) => {
+  btn.addEventListener("click", () => els.accountDialog.close());
+});
+
+if (els.accountDialog) {
+  els.accountDialog.addEventListener("click", (event) => {
+    if (event.target === els.accountDialog) els.accountDialog.close();
+  });
+}
+
+// Supabase braucht intern ein E-Mail-Feld fuer den Login-Mechanismus.
+// Wir verlangen aber NIE eine echte E-Mail vom Nutzer (Datenschutz/rechtlich) --
+// stattdessen erzeugen wir aus dem Username eine interne Kunst-Adresse,
+// die niemand zu sehen bekommt und die nirgendwo als echte Mail funktioniert.
+function usernameToEmail(username) {
+  const safe = username.trim().toLowerCase().replace(/[^a-z0-9_.-]/g, "");
+  return `${safe}@users.asianmaps.internal`;
+}
+
+if (els.accountLoginForm) {
+  els.accountLoginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const username = els.loginUsernameInput.value.trim();
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+      email: usernameToEmail(username),
+      password: els.loginPasswordInput.value
+    });
+    if (error) {
+      els.loginError.textContent = "Anmeldung fehlgeschlagen. Zugangsdaten prüfen.";
+      els.loginError.hidden = false;
+      return;
+    }
+    els.loginError.hidden = true;
+    els.accountLoginForm.reset();
+    await refreshAccountUI();
+    await loadCommunityLeaderboard();
+  });
+}
+
+if (els.accountRegisterForm) {
+  els.accountRegisterForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const username = els.registerUsernameInput.value.trim();
+    const { error } = await supabaseClient.auth.signUp({
+      email: usernameToEmail(username),
+      password: els.registerPasswordInput.value,
+      options: { data: { username } }
+    });
+    if (error) {
+      els.registerError.textContent = error.message.includes("already registered")
+        ? "Dieser Username ist bereits vergeben."
+        : error.message;
+      els.registerError.hidden = false;
+      return;
+    }
+    els.registerError.hidden = true;
+    els.accountRegisterForm.reset();
+    await refreshAccountUI();
+    await loadCommunityLeaderboard();
+  });
+}
+
+if (els.resetCoinsBtn) {
+  els.resetCoinsBtn.addEventListener("click", async () => {
+    const { error } = await supabaseClient.rpc("reset_my_coins");
+    if (error) {
+      alert("Reset fehlgeschlagen. Details in der Konsole (F12).");
+      console.error(error);
+      return;
+    }
+    await refreshAccountUI();
+    await loadCommunityLeaderboard();
+  });
+}
+
+if (els.accountLogoutBtn) {
+  els.accountLogoutBtn.addEventListener("click", async () => {
+    await supabaseClient.auth.signOut();
+    isAdminUnlocked = false;
+    els.accountDialog.close();
+    await refreshAccountUI();
+  });
+}
+
+// --- Prediction Market (anstehende Rennen, Quoten, Graph) ---------------
+
+const chartInstances = {};
+
+function renderUpcomingRaceCard(race) {
+  const entrants = race.race_entrants.map((e) => e.players);
+  return `
+    <div class="upcoming-race-card">
+      <div class="upcoming-entrants">
+        ${entrants.map((p) => `
+          <button type="button" class="entrant-bet-btn" data-bet-race="${race.id}" data-bet-player="${p.id}" data-bet-name="${p.name}">
+            ${avatarMarkup(p.name)}
+            <span class="entrant-name">${p.name}</span>
+            <span class="entrant-odds" data-odds-for="${p.id}">–</span>
+          </button>
+        `).join("")}
+      </div>
+      <div class="chart-wrap">
+        <canvas id="chart-${race.id}"></canvas>
+      </div>
+    </div>
+  `;
+}
+
+function renderOddsAndChart(race, raceBets) {
+  const entrants = race.race_entrants.map((e) => e.players);
+  const n = entrants.length;
+  if (n === 0) return;
+
+  const totals = Object.fromEntries(entrants.map((p) => [p.id, 0]));
+  let totalPool = 0;
+
+  const labels = ["Start"];
+  const series = Object.fromEntries(entrants.map((p) => [p.id, [100 / n]]));
+
+  raceBets.forEach((bet, index) => {
+    totals[bet.player_id] = (totals[bet.player_id] || 0) + bet.amount;
+    totalPool += bet.amount;
+    labels.push(`#${index + 1}`);
+    entrants.forEach((p) => {
+      const pct = totalPool > 0 ? (totals[p.id] / totalPool) * 100 : 100 / n;
+      series[p.id].push(pct);
+    });
+  });
+
+  entrants.forEach((p) => {
+    const el = document.querySelector(`[data-odds-for="${p.id}"]`);
+    if (el) {
+      const pct = series[p.id][series[p.id].length - 1];
+      el.textContent = `${pct.toFixed(0)}%`;
+    }
+  });
+
+  const canvas = document.getElementById(`chart-${race.id}`);
+  if (!canvas || typeof Chart === "undefined") return;
+
+  if (chartInstances[race.id]) {
+    chartInstances[race.id].destroy();
+  }
+
+  const colors = ["#6ee7ff", "#ff8fd6", "#ffd166", "#8b5cf6", "#34d399", "#f97066", "#60a5fa"];
+
+  chartInstances[race.id] = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels,
+      datasets: entrants.map((p, i) => ({
+        label: p.name,
+        data: series[p.id],
+        borderColor: colors[i % colors.length],
+        backgroundColor: "transparent",
+        tension: 0.3,
+        pointRadius: 0
+      }))
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: { padding: { top: 12, right: 12, bottom: 4, left: 4 } },
+      plugins: { legend: { labels: { color: "#cbd5e1", font: { size: 11 } } } },
+      scales: {
+        x: { display: false },
+        y: {
+          min: 0,
+          max: 100,
+          ticks: { color: "#94a3b8", callback: (v) => `${v}%` },
+          grid: { color: "rgba(255,255,255,0.06)" }
+        }
+      }
     }
   });
 }
 
-// Setzt die im Browser gespeicherten Zusatz-Rennen/-Bilder auf 0 zurück.
-// Damit vorher exportierter Code (der jetzt fest in app.js steckt) nicht bei
-// jedem weiteren Export erneut mit ausgegeben wird und immer länger wird.
-if (els.resetCustomBtn) {
-  els.resetCustomBtn.addEventListener("click", () => {
-    const confirmed = confirm(
-      "Wurde der generierte Code bereits in app.js übernommen?\n\nWenn ja, werden jetzt alle im Browser gespeicherten Rennen und Spielerbilder gelöscht (nicht die, die schon fest in app.js stehen)."
-    );
-    if (!confirmed) return;
+async function loadUpcomingRaces() {
+  if (!els.upcomingRaces) return;
 
-    customRaces = [];
-    customPlayerImages = {};
-    saveStoredJSON(STORAGE_RACES_KEY, customRaces);
-    saveStoredJSON(STORAGE_IMAGES_KEY, customPlayerImages);
-    els.exportOutput.value = "";
-    renderAll();
+  if (!PREDICTIONS_ENABLED) {
+    els.upcomingRaces.innerHTML = `
+      <div class="upcoming-race-card">
+        <p class="admin-empty">🚧 Das Wett-Feature wird aktuell überarbeitet und ist bald wieder da. Schau später nochmal vorbei!</p>
+      </div>
+    `;
+    return;
+  }
+
+  const { data: races, error } = await supabaseClient
+    .from("races")
+    .select("id, created_at, race_entrants(player_id, players(id, name))")
+    .eq("status", "upcoming")
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error("Anstehende Rennen konnten nicht geladen werden:", error);
+    return;
+  }
+
+  if (!races || races.length === 0) {
+    els.upcomingRaces.innerHTML = `<p class="admin-empty">Aktuell keine anstehenden Rennen zum Wetten.</p>`;
+    return;
+  }
+
+  const raceIds = races.map((r) => r.id);
+  const { data: bets, error: betsError } = await supabaseClient
+    .from("bets")
+    .select("race_id, player_id, amount, created_at")
+    .in("race_id", raceIds)
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
+
+  if (betsError) console.error("Wetten konnten nicht geladen werden:", betsError);
+
+  els.upcomingRaces.innerHTML = races.map((race) => renderUpcomingRaceCard(race)).join("");
+
+  races.forEach((race) => {
+    const raceBets = (bets || []).filter((b) => b.race_id === race.id);
+    renderOddsAndChart(race, raceBets);
+  });
+
+  els.upcomingRaces.querySelectorAll("[data-bet-player]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const { data: sessionData } = await supabaseClient.auth.getSession();
+      if (!sessionData.session) {
+        alert("Bitte zuerst mit deinem Community-Konto anmelden.");
+        els.accountDialog.showModal();
+        return;
+      }
+
+      const raceId = btn.dataset.betRace;
+      const playerId = btn.dataset.betPlayer;
+      const playerName = btn.dataset.betName;
+
+      const amountStr = prompt(`Wie viele Coins auf ${playerName} setzen?`);
+      if (amountStr === null) return;
+      const amount = Math.floor(Number(amountStr));
+      if (!amount || amount <= 0) {
+        alert("Ungültiger Betrag.");
+        return;
+      }
+
+      const { error: betError } = await supabaseClient.rpc("place_bet", {
+        p_race_id: raceId,
+        p_player_id: playerId,
+        p_amount: amount
+      });
+
+      if (betError) {
+        alert(`Wette fehlgeschlagen: ${betError.message}`);
+        return;
+      }
+
+      await loadUpcomingRaces();
+      await refreshAccountUI();
+
+      const { data: freshProfile } = await supabaseClient
+        .from("profiles")
+        .select("coins")
+        .eq("id", sessionData.session.user.id)
+        .single();
+
+      alert(
+        freshProfile
+          ? `Wette platziert: ${amount} Coins auf ${playerName}.\nDein neuer Kontostand: ${freshProfile.coins} Coins.`
+          : `Wette platziert: ${amount} Coins auf ${playerName}.`
+      );
+    });
   });
 }
 
-renderAll();
+async function loadCommunityLeaderboard() {
+  if (!els.communityLeaderboard) return;
+
+  if (!ACCOUNTS_ENABLED) {
+    els.communityLeaderboard.innerHTML = `<div class="leader-row"><span></span><span class="driver"><strong>🚧 Bald verfügbar</strong><span>Konten werden aktuell überarbeitet</span></span></div>`;
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("username, coins, is_admin")
+    .order("coins", { ascending: false });
+
+  if (error) {
+    console.error("Community-Rangliste konnte nicht geladen werden:", error);
+    return;
+  }
+
+  const list = data.filter((row) => !row.is_admin);
+
+  if (list.length === 0) {
+    els.communityLeaderboard.innerHTML = `<div class="leader-row"><span></span><span class="driver"><strong>Noch keine Mitglieder</strong><span>Sei die/der Erste mit einem Konto</span></span></div>`;
+    return;
+  }
+
+  els.communityLeaderboard.innerHTML = list.map((row, index) => `
+    <div class="leader-row">
+      <span class="rank">#${index + 1}</span>
+      <span class="driver">
+        ${avatarMarkup(row.username)}
+        <span class="driver-info"><strong>${row.username}</strong></span>
+      </span>
+      <span class="score">${row.coins.toLocaleString("de-DE")}</span>
+    </div>
+  `).join("");
+}
+
+supabaseClient.auth.onAuthStateChange(() => {
+  refreshAccountUI();
+});
+
+loadBaseData()
+  .then(() => {
+    renderAll();
+    refreshAccountUI();
+    loadCommunityLeaderboard();
+    loadUpcomingRaces();
+  })
+  .catch((error) => {
+    console.error("Konnte Daten nicht aus Supabase laden:", error);
+    els.leaderboard.innerHTML = `
+      <div class="leader-row">
+        <span></span>
+        <span class="driver"><strong>Fehler beim Laden</strong><span>Bitte Seite neu laden oder Konsole prüfen</span></span>
+      </div>
+    `;
+  });

@@ -24,7 +24,10 @@
         <a href="#ranking">Rangliste</a>
         <a href="#formula">Formel</a>
         <a href="#races">Rennen</a>
+        <a href="#upcoming">Wetten</a>
+        <a href="#community">Community</a>
       </nav>
+      <button class="ghost-action" id="accountToggle" type="button">Konto</button>
     </header>
 
     <main id="top">
@@ -161,11 +164,99 @@
         </div>
         <div class="race-grid reveal" id="raceGrid"></div>
       </section>
+
+      <section class="section" id="upcoming">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Prediction Market</p>
+          <h2>Anstehende Rennen</h2>
+          <p>Setz virtuelle Coins auf den Sieger. Die Quote zeigt den aktuellen Anteil aller Wetten auf diesen Fahrer.</p>
+        </div>
+        <div id="upcomingRaces" class="upcoming-races"></div>
+      </section>
+
+      <section class="section leaderboard-section" id="community">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Prediction Game</p>
+          <h2>Community-Rangliste</h2>
+          <p>Virtuelles Coin-System, kein Echtgeld. Jeder startet mit 1000 Coins.</p>
+        </div>
+        <div class="leaderboard-shell reveal">
+          <div class="table-head">
+            <span>Rang</span>
+            <span>Nutzer</span>
+            <span>Coins</span>
+          </div>
+          <div id="communityLeaderboard" class="leaderboard"></div>
+        </div>
+      </section>
     </main>
 
     <dialog id="playerDialog" class="player-dialog">
       <button class="dialog-close" type="button" aria-label="Schließen">×</button>
       <div id="dialogContent"></div>
+    </dialog>
+
+    <dialog id="accountDialog" class="admin-dialog">
+      <button class="dialog-close" type="button" aria-label="Schließen" data-account-close>×</button>
+      <div class="dialog-body admin-body">
+
+        <div id="accountMaintenance" hidden>
+          <p class="eyebrow">Community-Konto</p>
+          <h2>🚧 Bald verfügbar</h2>
+          <p>Konten und Login werden aktuell überarbeitet. Schau später nochmal vorbei!</p>
+        </div>
+
+        <div id="accountAuth" class="admin-login">
+
+          <div data-account-panel="login">
+            <p class="eyebrow">Community-Konto</p>
+            <h2>Anmelden</h2>
+            <form id="accountLoginForm" class="admin-form">
+              <label>
+                <span>Username</span>
+                <input type="text" id="loginUsernameInput" required autocomplete="username" />
+              </label>
+              <label>
+                <span>Passwort</span>
+                <input type="password" id="loginPasswordInput" required autocomplete="current-password" />
+              </label>
+              <p class="admin-error" id="loginError" hidden>Anmeldung fehlgeschlagen. Zugangsdaten prüfen.</p>
+              <button class="primary-action" type="submit">Anmelden</button>
+            </form>
+            <button type="button" class="ghost-action" id="showRegisterBtn">Kein Konto? Konto erstellen</button>
+          </div>
+
+          <div data-account-panel="register" hidden>
+            <p class="eyebrow">Community-Konto</p>
+            <h2>Konto erstellen</h2>
+            <form id="accountRegisterForm" class="admin-form">
+              <label>
+                <span>Username</span>
+                <input type="text" id="registerUsernameInput" required autocomplete="username" />
+              </label>
+              <label>
+                <span>Passwort</span>
+                <input type="password" id="registerPasswordInput" required minlength="6" autocomplete="new-password" />
+              </label>
+              <p class="admin-error" id="registerError" hidden></p>
+              <button class="primary-action" type="submit">Konto erstellen</button>
+            </form>
+            <button type="button" class="ghost-action" id="showLoginBtn">Schon ein Konto? Anmelden</button>
+          </div>
+
+        </div>
+
+        <div id="accountProfile" class="admin-panel" hidden>
+          <p class="eyebrow">Dein Konto</p>
+          <h2 id="accountUsername">-</h2>
+          <div class="dialog-stats">
+            <div class="dialog-stat"><strong id="accountCoins">-</strong><span>Coins</span></div>
+          </div>
+          <button type="button" class="ghost-action admin-danger" id="resetCoinsBtn" hidden>Auf 1000 Coins zurücksetzen</button>
+          <button type="button" class="ghost-action" id="accountLogoutBtn">Abmelden</button>
+        </div>
+
+      </div>
     </dialog>
 
     <dialog id="adminDialog" class="admin-dialog">
@@ -191,12 +282,19 @@
 
           <div class="admin-tabs" role="tablist">
             <button type="button" class="admin-tab active" data-tab="race">Neues Rennen</button>
+            <button type="button" class="admin-tab" data-tab="announce">Rennen ankündigen</button>
             <button type="button" class="admin-tab" data-tab="player">Spielerbild</button>
-            <button type="button" class="admin-tab" data-tab="export">Export</button>
           </div>
+          <button type="button" class="ghost-action" id="adminLogoutBtn">Abmelden</button>
 
           <section class="admin-tab-panel" data-panel="race">
             <form id="raceForm" class="admin-form">
+              <label id="resolveRaceLabel">
+                <span>Bezieht sich auf angekündigtes Rennen</span>
+                <select id="resolveRaceSelect">
+                  <option value="">— Neues Rennen (nicht vorher angekündigt) —</option>
+                </select>
+              </label>
               <label>
                 <span>YouTube-Link</span>
                 <input type="url" id="raceVideoInput" placeholder="https://www.youtube.com/watch?v=..." required />
@@ -210,6 +308,15 @@
               <h3>Manuell hinzugefügte Rennen</h3>
               <div id="customRaceList"></div>
             </div>
+          </section>
+
+          <section class="admin-tab-panel" data-panel="announce" hidden>
+            <p>Kündigt ein Rennen mit Teilnehmerliste an, bevor es gefahren wird. Die Community kann dann darauf wetten.</p>
+            <form id="announceForm" class="admin-form">
+              <div id="entrantRows" class="result-rows"></div>
+              <button type="button" class="ghost-action" id="addEntrantRowBtn">+ Fahrer hinzufügen</button>
+              <button class="primary-action" type="submit">Rennen ankündigen</button>
+            </form>
           </section>
 
           <section class="admin-tab-panel" data-panel="player" hidden>
@@ -230,21 +337,15 @@
               <button class="primary-action" type="submit">Bild speichern</button>
             </form>
           </section>
-
-          <section class="admin-tab-panel" data-panel="export" hidden>
-            <p>Diese Daten liegen nur in diesem Browser (localStorage). Für eine dauerhafte Änderung der Webseite diesen Code in <code>app.js</code> einfügen (ersetzt <code>baseRaces</code> und <code>basePlayerImages</code>).</p>
-            <button type="button" class="ghost-action" id="generateExportBtn">Code generieren</button>
-            <textarea id="exportOutput" class="export-output" readonly rows="14"></textarea>
-            <button type="button" class="ghost-action" id="copyExportBtn">Kopieren</button>
-            <p class="admin-hint">Sobald der Code in <code>app.js</code> übernommen wurde, hier zurücksetzen – sonst wächst der Export bei jeder weiteren Generierung immer weiter an.</p>
-            <button type="button" class="ghost-action admin-danger" id="resetCustomBtn">Eigene Daten zurücksetzen</button>
-          </section>
         </div>
       </div>
     </dialog>
 
     <button class="admin-toggle" id="adminToggle" type="button" aria-label="Admin öffnen">⚙</button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="./supabaseClient.js"></script>
     <script src="./app.js"></script>
 
     <footer class="footer">
