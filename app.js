@@ -6,7 +6,7 @@ let basePlayerImages = {};
 async function loadBaseData() {
   const { data: racesData, error: racesError } = await supabaseClient
     .from("races")
-    .select("id, video_url, created_at, race_results(place, players(name))")
+    .select("id, video_url, created_at, race_date, race_results(place, players(name))")
     .eq("status", "finished")
     .order("created_at", { ascending: true });
 
@@ -15,6 +15,7 @@ async function loadBaseData() {
   baseRaces = racesData.map((race) => ({
     id: race.id,
     video: race.video_url,
+    date: race.race_date,
     results: race.race_results.map((r) => [r.players.name, r.place])
   }));
 
@@ -85,6 +86,9 @@ const els = {
   raceVideoInput: document.querySelector("#raceVideoInput"),
   resultRows: document.querySelector("#resultRows"),
   addRowBtn: document.querySelector("#addRowBtn"),
+  raceDateInput: document.querySelector("#raceDateInput"),
+  dailyDateSelect: document.querySelector("#dailyDateSelect"),
+  dailyLeaderboard: document.querySelector("#dailyLeaderboard"),
   customRaceList: document.querySelector("#customRaceList"),
   playerImageForm: document.querySelector("#playerImageForm"),
   playerNameInput: document.querySelector("#playerNameInput"),
@@ -148,9 +152,9 @@ function getRaceResults(race) {
   return [...bestByPlayer.entries()].sort((a, b) => a[1] - b[1]);
 }
 
-function buildStats() {
+function buildStats(racesInput) {
   const playerMap = new Map();
-  const allRaces = getAllRaces();
+  const allRaces = racesInput || getAllRaces();
 
   allRaces.forEach((race, raceIndex) => {
     const cleanResults = getRaceResults(race);
@@ -338,6 +342,68 @@ function renderRaces() {
   }).join("");
 }
 
+function formatDateLabel(isoDate) {
+  const [year, month, day] = isoDate.split("-");
+  return `${day}.${month}.${year}`;
+}
+
+function populateDailyDateSelect() {
+  if (!els.dailyDateSelect) return;
+
+  const dates = [...new Set(getAllRaces().map((race) => race.date).filter(Boolean))]
+    .sort((a, b) => (a < b ? 1 : -1));
+
+  if (dates.length === 0) {
+    els.dailyDateSelect.innerHTML = `<option value="">Keine Rennen vorhanden</option>`;
+    els.dailyLeaderboard.innerHTML = `<div class="leader-row"><span></span><span class="driver"><strong>Keine Rennen</strong><span>Noch keine Rennen mit Datum vorhanden</span></span></div>`;
+    return;
+  }
+
+  const previousValue = els.dailyDateSelect.value;
+  els.dailyDateSelect.innerHTML = dates
+    .map((date) => `<option value="${date}">${formatDateLabel(date)}</option>`)
+    .join("");
+
+  els.dailyDateSelect.value = dates.includes(previousValue) ? previousValue : dates[0];
+  renderDailyLeaderboard();
+}
+
+function renderDailyLeaderboard() {
+  if (!els.dailyLeaderboard || !els.dailyDateSelect) return;
+
+  const selectedDate = els.dailyDateSelect.value;
+  const racesOfDay = getAllRaces().filter((race) => race.date === selectedDate);
+
+  if (racesOfDay.length === 0) {
+    els.dailyLeaderboard.innerHTML = `<div class="leader-row"><span></span><span class="driver"><strong>Keine Rennen</strong><span>An diesem Tag wurden keine Rennen erfasst</span></span></div>`;
+    return;
+  }
+
+  const dailyPlayers = buildStats(racesOfDay);
+  const bestScore = Math.max(...dailyPlayers.map((player) => player.score));
+
+  els.dailyLeaderboard.innerHTML = dailyPlayers.map((player, index) => `
+    <div class="leader-row" style="--heat: ${player.score / bestScore}">
+      <span class="rank">#${index + 1}</span>
+      <span class="driver">
+        ${avatarMarkup(player.name)}
+        <span class="driver-info">
+          <strong>${player.name}</strong>
+          <span>${player.wins} Siege</span>
+        </span>
+      </span>
+      <span class="score">${format(player.score)}</span>
+      <span class="metric race-count">${player.races}</span>
+      <span class="metric top-three">${format(player.top3Rate * 100, 0)}%</span>
+      <span class="metric avg-place">${format(player.avgPlace)}</span>
+    </div>
+  `).join("");
+}
+
+if (els.dailyDateSelect) {
+  els.dailyDateSelect.addEventListener("change", renderDailyLeaderboard);
+}
+
 function openPlayer(name) {
   const player = players.find((item) => item.name === name);
   if (!player) return;
@@ -379,6 +445,7 @@ function renderAll() {
   renderRaces();
   renderAdminRaceList();
   renderAdminPlayerList();
+  populateDailyDateSelect();
 }
 
 document.querySelectorAll(".segmented button").forEach((button) => {
@@ -445,6 +512,7 @@ function resetAnnounceForm() {
 function resetRaceForm() {
   if (!els.resultRows) return;
   els.raceVideoInput.value = "";
+  if (els.raceDateInput) els.raceDateInput.value = new Date().toISOString().slice(0, 10);
   if (els.resolveRaceSelect) els.resolveRaceSelect.value = "";
   els.resultRows.innerHTML = "";
   for (let i = 0; i < 4; i += 1) {
@@ -561,6 +629,7 @@ if (els.raceForm) {
     event.preventDefault();
     const video = els.raceVideoInput.value.trim();
     if (!video) return;
+    const raceDate = els.raceDateInput ? els.raceDateInput.value : new Date().toISOString().slice(0, 10);
 
     const rows = [...els.resultRows.querySelectorAll(".result-row")];
     const results = rows
@@ -596,13 +665,13 @@ if (els.raceForm) {
         raceId = resolvingRaceId;
         const { error: updateError } = await supabaseClient
           .from("races")
-          .update({ video_url: video })
+          .update({ video_url: video, race_date: raceDate })
           .eq("id", raceId);
         if (updateError) throw updateError;
       } else {
         const { data: newRace, error: raceError } = await supabaseClient
           .from("races")
-          .insert({ video_url: video })
+          .insert({ video_url: video, race_date: raceDate })
           .select("id")
           .single();
         if (raceError) throw raceError;

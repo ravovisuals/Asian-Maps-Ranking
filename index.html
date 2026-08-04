@@ -24,6 +24,7 @@
         <a href="#ranking">Rangliste</a>
         <a href="#formula">Formel</a>
         <a href="#races">Rennen</a>
+        <a href="#daily">Tagesrangliste</a>
         <a href="#upcoming">Wetten</a>
         <a href="#community">Community</a>
       </nav>
@@ -174,6 +175,31 @@
         <div id="upcomingRaces" class="upcoming-races"></div>
       </section>
 
+      <section class="section leaderboard-section" id="daily">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Nach Tag</p>
+          <h2>Tagesrangliste</h2>
+          <p>Wähle einen Tag, um nur die an diesem Tag gefahrenen Rennen zu sehen.</p>
+        </div>
+        <div class="toolbar reveal">
+          <label class="search">
+            <span>Tag</span>
+            <select id="dailyDateSelect"></select>
+          </label>
+        </div>
+        <div class="leaderboard-shell reveal">
+          <div class="table-head">
+            <span>Rang</span>
+            <span>Fahrer</span>
+            <span>Score</span>
+            <span>Rennen</span>
+            <span>Top 3</span>
+            <span>Ø Platz</span>
+          </div>
+          <div id="dailyLeaderboard" class="leaderboard"></div>
+        </div>
+      </section>
+
       <section class="section leaderboard-section" id="community">
         <div class="section-heading reveal">
           <p class="eyebrow">Prediction Game</p>
@@ -298,6 +324,10 @@
               <label>
                 <span>YouTube-Link</span>
                 <input type="url" id="raceVideoInput" placeholder="https://www.youtube.com/watch?v=..." required />
+              </label>
+              <label>
+                <span>Datum des Rennens</span>
+                <input type="date" id="raceDateInput" required />
               </label>
               <div id="resultRows" class="result-rows"></div>
               <button type="button" class="ghost-action" id="addRowBtn">+ Fahrer hinzufügen</button>
