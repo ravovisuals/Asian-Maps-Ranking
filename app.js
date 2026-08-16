@@ -192,7 +192,7 @@ function buildStats(racesInput) {
     const top3Rate = player.podiums / player.races;
     const winRate = player.wins / player.races;
     const reliability = player.races < MIN_RACES ? 0.72 : 0.88 + 0.12 * (1 - Math.exp(-(player.races - MIN_RACES) / 8));
-    const volumeBonus = player.races < MIN_RACES
+    const volumeBonus = player.races < MIN_RACES || maxRaces <= MIN_RACES
       ? 0
       : (Math.log1p(player.races - MIN_RACES) / Math.log1p(maxRaces - MIN_RACES)) * 6;
     const score = avgPerformance * reliability + top3Rate * 5 + winRate * 3 + volumeBonus;
@@ -306,7 +306,7 @@ function renderLeaderboard() {
   els.leaderboard.innerHTML = list.map((player) => {
     const globalRank = players.findIndex((item) => item.name === player.name) + 1;
     return `
-      <button class="leader-row" type="button" style="--heat: ${player.score / bestScore}" data-player="${player.name}" data-rank-row="true">
+      <button class="leader-row" type="button" style="--heat: ${player.score / (bestScore || 1)}" data-player="${player.name}" data-rank-row="true">
         <span class="rank">#${globalRank}</span>
         <span class="driver">
           ${avatarMarkup(player.name)}
@@ -383,7 +383,7 @@ function renderDailyLeaderboard() {
   const bestScore = Math.max(...dailyPlayers.map((player) => player.score));
 
   els.dailyLeaderboard.innerHTML = dailyPlayers.map((player, index) => `
-    <div class="leader-row" style="--heat: ${player.score / bestScore}">
+    <div class="leader-row" style="--heat: ${player.score / (bestScore || 1)}">
       <span class="rank">#${index + 1}</span>
       <span class="driver">
         ${avatarMarkup(player.name)}
@@ -532,6 +532,7 @@ function renderAdminRaceList() {
         <strong>${race.results.map(([name, place]) => `#${place} ${name}`).join(", ")}</strong>
         <a href="${race.video}" target="_blank" rel="noreferrer">Quelle</a>
       </div>
+      <input type="date" class="race-date-edit" value="${race.date || ""}" data-race-date="${race.id}" />
       <button type="button" class="result-remove" data-remove-race="${race.id}" aria-label="Rennen löschen">×</button>
     </div>
   `).join("");
@@ -848,6 +849,27 @@ if (els.customRaceList) {
     if (error) {
       console.error("Löschen fehlgeschlagen:", error);
       alert("Fehler beim Löschen. Details in der Browser-Konsole (F12).");
+      return;
+    }
+    await loadBaseData();
+    renderAll();
+  });
+
+  els.customRaceList.addEventListener("change", async (event) => {
+    const input = event.target.closest("[data-race-date]");
+    if (!input) return;
+    const raceId = input.dataset.raceDate;
+    const newDate = input.value;
+    if (!newDate) return;
+
+    const { error } = await supabaseClient
+      .from("races")
+      .update({ race_date: newDate })
+      .eq("id", raceId);
+
+    if (error) {
+      console.error("Datum konnte nicht gespeichert werden:", error);
+      alert("Fehler beim Speichern des Datums. Details in der Browser-Konsole (F12).");
       return;
     }
     await loadBaseData();
